@@ -11,7 +11,7 @@
 #import <objc/message.h>
 #import <UIKit/UIKit.h>
 
-/// call deepth
+/// calling deepth
 static int deepth = -1;
 
 #pragma mark - Function Defination
@@ -117,7 +117,12 @@ BOOL ic_isInBlackList(NSString *methodName) {
 	static NSArray *defaultBlackList = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		defaultBlackList = @[/*UIViewController的:*/@".cxx_destruct", @"dealloc", @"_isDeallocating", @"release", @"autorelease", @"retain", @"Retain", @"_tryRetain", @"copy", /*UIView的:*/ @"nsis_descriptionOfVariable:", /*NSObject的:*/@"respondsToSelector:", @"class", @"methodSignatureForSelector:", @"allowsWeakReference", @"retainWeakReference", @"init", @"forwardInvocation:"];
+		defaultBlackList = @[/*UIViewController*/
+												 @".cxx_destruct", @"dealloc", @"_isDeallocating", @"release", @"autorelease", @"retain", @"Retain", @"_tryRetain", @"copy",
+												 /*UIView*/
+												 @"nsis_descriptionOfVariable:",
+												 /*NSObject*/
+												 @"respondsToSelector:", @"class", @"methodSignatureForSelector:", @"allowsWeakReference", @"retainWeakReference", @"init", @"forwardInvocation:"];
 	});
 	return ([defaultBlackList containsObject:methodName]);
 }

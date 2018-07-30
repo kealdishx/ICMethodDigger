@@ -15,6 +15,11 @@
 		1B02D32B210F3B4700738016 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D32A210F3B4700738016 /* main.m */; };
 		1B02D335210F3B4800738016 /* ICMethodDiggerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D334210F3B4800738016 /* ICMethodDiggerTests.m */; };
 		1B02D342210F3BC700738016 /* ICMethodDigger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D340210F3BC700738016 /* ICMethodDigger.m */; };
+		E02AA818210F3CDE00CD54C6 /* NSObject+ICMsgStub.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */; };
+		E02AA819210F3CDE00CD54C6 /* ICIMPBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA810210F3CDD00CD54C6 /* ICIMPBridge.m */; };
+		E02AA81A210F3CDE00CD54C6 /* ICSwizzler.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA812210F3CDE00CD54C6 /* ICSwizzler.m */; };
+		E02AA81B210F3CDE00CD54C6 /* ICBridge_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = E02AA814210F3CDE00CD54C6 /* ICBridge_arm64.s */; };
+		E02AA81C210F3CDE00CD54C6 /* ICMessageStub.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA816210F3CDE00CD54C6 /* ICMessageStub.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +48,15 @@
 		1B02D336210F3B4800738016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B02D340210F3BC700738016 /* ICMethodDigger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMethodDigger.m; sourceTree = "<group>"; };
 		1B02D341210F3BC700738016 /* ICMethodDigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMethodDigger.h; sourceTree = "<group>"; };
+		E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ICMsgStub.m"; sourceTree = "<group>"; };
+		E02AA810210F3CDD00CD54C6 /* ICIMPBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICIMPBridge.m; sourceTree = "<group>"; };
+		E02AA811210F3CDE00CD54C6 /* ICIMPBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICIMPBridge.h; sourceTree = "<group>"; };
+		E02AA812210F3CDE00CD54C6 /* ICSwizzler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICSwizzler.m; sourceTree = "<group>"; };
+		E02AA813210F3CDE00CD54C6 /* ICSwizzler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICSwizzler.h; sourceTree = "<group>"; };
+		E02AA814210F3CDE00CD54C6 /* ICBridge_arm64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = ICBridge_arm64.s; sourceTree = "<group>"; };
+		E02AA815210F3CDE00CD54C6 /* ICMessageStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICMessageStub.h; sourceTree = "<group>"; };
+		E02AA816210F3CDE00CD54C6 /* ICMessageStub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICMessageStub.m; sourceTree = "<group>"; };
+		E02AA817210F3CDE00CD54C6 /* NSObject+ICMsgStub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ICMsgStub.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +126,15 @@
 			children = (
 				1B02D341210F3BC700738016 /* ICMethodDigger.h */,
 				1B02D340210F3BC700738016 /* ICMethodDigger.m */,
+				E02AA814210F3CDE00CD54C6 /* ICBridge_arm64.s */,
+				E02AA811210F3CDE00CD54C6 /* ICIMPBridge.h */,
+				E02AA810210F3CDD00CD54C6 /* ICIMPBridge.m */,
+				E02AA815210F3CDE00CD54C6 /* ICMessageStub.h */,
+				E02AA816210F3CDE00CD54C6 /* ICMessageStub.m */,
+				E02AA813210F3CDE00CD54C6 /* ICSwizzler.h */,
+				E02AA812210F3CDE00CD54C6 /* ICSwizzler.m */,
+				E02AA817210F3CDE00CD54C6 /* NSObject+ICMsgStub.h */,
+				E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -217,8 +240,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B02D320210F3B4600738016 /* ViewController.m in Sources */,
+				E02AA819210F3CDE00CD54C6 /* ICIMPBridge.m in Sources */,
 				1B02D32B210F3B4700738016 /* main.m in Sources */,
+				E02AA81B210F3CDE00CD54C6 /* ICBridge_arm64.s in Sources */,
+				E02AA81C210F3CDE00CD54C6 /* ICMessageStub.m in Sources */,
 				1B02D342210F3BC700738016 /* ICMethodDigger.m in Sources */,
+				E02AA818210F3CDE00CD54C6 /* NSObject+ICMsgStub.m in Sources */,
+				E02AA81A210F3CDE00CD54C6 /* ICSwizzler.m in Sources */,
 				1B02D31D210F3B4600738016 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
