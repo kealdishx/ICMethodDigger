@@ -7,9 +7,14 @@
 //
 
 #import "ICMessageStub.h"
+#import "ICBlock.h"
+#import "ICMethodHelper.h"
+#import "ICHandler.h"
 #import <objc/runtime.h>
 
 @implementation ICMessageStub
+
+static int deepth = -1;
 
 - (instancetype)initWithTarget:(id)target selector:(SEL)temporarySEL {
 
@@ -33,14 +38,35 @@
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation {
 	
+	NSArray *args = ic_method_arguments(anInvocation);
+	
+	NSString *originSELString = NSStringFromSelector(self.selector);
+	
+	/// UMAOCTools will cause unexpected result.
+	if ([originSELString rangeOfString:@"hook_"].location != NSNotFound) {
+		return;
+	}
+	
 	anInvocation.target = self.target;
 	anInvocation.selector = self.selector;
 	
-	if (![NSThread isMainThread]) {
-		NSLog(@"===============[libMainThreadChecker.dylib]::%@ should be called within main thread only================\n", NSStringFromSelector(self.selector));
-	}
+	NSString *originSELstr = [NSStringFromSelector(self.selector) stringByReplacingOccurrencesOfString:@"__ICMessageFinal_" withString:@""];
+	SEL originSEL = NSSelectorFromString(originSELstr);
+	
+	deepth++;
+	
+	ICBlock *block = [[ICMethodHelper sharedInstance] blockWithTarget:self.target];
+	[block rundBefore:self.target sel:originSEL args:args deep:deepth];
+	
+	NSTimeInterval start = CFAbsoluteTimeGetCurrent();
 	
 	[anInvocation invoke];
+	
+	NSTimeInterval interval = CFAbsoluteTimeGetCurrent() - start;
+	
+	[block rundAfter:self.target sel:originSEL args:args interval:interval deep:deepth retValue:getReturnValue(anInvocation)];
+	
+	deepth--;
 }
 
 @end

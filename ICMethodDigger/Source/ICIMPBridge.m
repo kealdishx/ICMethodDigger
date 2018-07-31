@@ -14,7 +14,7 @@
 #import <mach/vm_map.h>
 #import <mach/mach_init.h>
 
-FOUNDATION_EXTERN id ic_forwarding_bridge_page(id, SEL);
+id ic_forwarding_bridge_page(id, SEL);
 
 typedef struct {
 	SEL selector;

@@ -9,36 +9,43 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 
-FOUNDATION_EXTERN NSDictionary *ic_canHandleTypeDic(void);
+NSDictionary *ic_canHandleTypeDic(void);
 
-FOUNDATION_EXTERN BOOL ic_isCanHandle(NSString *typeEncode);
+BOOL ic_isCanHandle(NSString *typeEncode);
 
-FOUNDATION_EXTERN SEL ic_createNewSelector(SEL originalSelector);
+BOOL ic_isStructType(const char *argumentType);
 
-FOUNDATION_EXTERN BOOL ic_isStructType(const char *argumentType);
+NSString *ic_structName(const char *argumentType);
 
-FOUNDATION_EXTERN NSString *ic_structName(const char *argumentType);
+BOOL isCGRect           (const char *type);
 
-FOUNDATION_EXTERN BOOL isCGRect           (const char *type);
+BOOL isCGPoint          (const char *type);
 
-FOUNDATION_EXTERN BOOL isCGPoint          (const char *type);
+BOOL isCGSize           (const char *type);
 
-FOUNDATION_EXTERN BOOL isCGSize           (const char *type);
+BOOL isCGVector         (const char *type);
 
-FOUNDATION_EXTERN BOOL isCGVector         (const char *type);
+BOOL isUIOffset         (const char *type);
 
-FOUNDATION_EXTERN BOOL isUIOffset         (const char *type);
+BOOL isUIEdgeInsets     (const char *type);
 
-FOUNDATION_EXTERN BOOL isUIEdgeInsets     (const char *type);
-
-FOUNDATION_EXTERN BOOL isCGAffineTransform(const char *type);
+BOOL isCGAffineTransform(const char *type);
 
 // Decide whether mthod can be hooked or not
-FOUNDATION_EXTERN BOOL ic_isCanHook(Method method, const char *returnType);
+BOOL ic_isCanHook(Method method, const char *returnType);
 
 // Get return value at forwarding action
-FOUNDATION_EXTERN id getReturnValue(NSInvocation *invocation);
+id getReturnValue(NSInvocation *invocation);
 
 // Get method arugments at forwarding action
-FOUNDATION_EXTERN NSArray *ic_method_arguments(NSInvocation *invocation);
+NSArray *ic_method_arguments(NSInvocation *invocation);
 
+BOOL triggerForwardInvocation(Class cls, SEL originSEL, char *returnType);
+
+BOOL ic_isInSkipList(NSString *methodName);
+
+/// Subclass should swizzle method in order to constant circulation between IMP
+/// of superclass and that of subclass
+BOOL ic_swizzleMethod(Class cls, SEL origSEL);
+
+void ic_logMethod(Class cls, BOOL(^condition)(SEL sel));

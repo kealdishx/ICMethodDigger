@@ -8,4 +8,4 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXTERN IMP imp_selector_bridge(SEL forwardingSEL);
+IMP imp_selector_bridge(SEL forwardingSEL);

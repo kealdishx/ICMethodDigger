@@ -9,23 +9,5 @@
 #import <Foundation/Foundation.h>
 #import "ICDefine.h"
 
-NS_ASSUME_NONNULL_BEGIN
+void icm_logMethod(Class cls, ICConditionBlock condition, _Nullable ICBeforeBlock before, _Nullable ICAfterBlock after);
 
-@interface ICMethodDigger : NSObject
-
-/**
- 打印对象的方法调用
- 
- @param aClass 要打印的类
- @param condition 根据此 block 来决定是否追踪方法（sel 是方法名）
- @param before 方法调用前会调用该 block（target 是检测的对象，sel 是方法名，args 是参数列表，deep 是调用层级）
- @param after 方法调用后会调用该 block（interval 是执行方法的耗时，retValue 是返回值）
- */
-+ (void)logMethodWithClass:(Class)aClass
-								 condition:(ICConditionBlock) condition
-										before:(ICBeforeBlock) before
-										 after:(ICAfterBlock) after;
-
-@end
-
-NS_ASSUME_NONNULL_END

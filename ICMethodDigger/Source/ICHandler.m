@@ -7,8 +7,18 @@
 //
 
 #import "ICHandler.h"
-#import "ICSwizzler.h"
+#import "ICDefine.h"
+#import "ICIMPBridge.h"
+#import <objc/message.h>
 #import <UIKit/UIKit.h>
+
+//#define OPEN_DEV_LOG
+
+#ifdef OPEN_DEV_LOG
+#define DEV_LOG(format, ...) NSLog(format, ## __VA_ARGS__)
+#else
+#define DEV_LOG(format, ...)
+#endif
 
 // reference: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html#//apple_ref/doc/uid/TP40008048-CH100-SW1
 NSDictionary *ic_canHandleTypeDic() {
@@ -87,14 +97,6 @@ BOOL ic_isCanHook(Method method, const char *returnType) {
 	}
 	
 	return isCanHook;
-}
-
-//创建一个新的selector
-SEL ic_createNewSelector(SEL originalSelector) {
-	NSString *oldSelectorName = NSStringFromSelector(originalSelector);
-	NSString *newSelectorName = [NSString stringWithFormat:@"ic_%@", oldSelectorName];
-	SEL newSelector = NSSelectorFromString(newSelectorName);
-	return newSelector;
 }
 
 //是否struct类型
@@ -272,4 +274,137 @@ NSArray *ic_method_arguments(NSInvocation *invocation) {
 		[argList addObject:arg];
 	}
 	return argList;
+}
+
+BOOL triggerForwardInvocation(Class cls, SEL selector, char *returnType) {
+	
+	Method method = class_getInstanceMethod(cls, selector);
+	
+	if (method == nil) {
+		return NO;
+	}
+	
+	IMP msg_forwardIMP = _objc_msgForward;
+	IMP originIMP = method_getImplementation(method);
+	
+	if (originIMP == nil || originIMP == msg_forwardIMP) {
+		return NO;
+	}
+	
+	/// trigger forwardInvocation method
+	const char *typeEncoding = method_getTypeEncoding(method);
+	class_replaceMethod(cls, selector, msg_forwardIMP, typeEncoding);
+	
+	return YES;
+	
+}
+
+BOOL ic_swizzleMethod(Class cls, SEL origSEL) {
+	
+	NSLog(@"%@",NSStringFromSelector(origSEL));
+	
+	Method origMethod = class_getInstanceMethod(cls, origSEL);
+	if (!origMethod) return false;
+	
+	const char *origin_type = method_getTypeEncoding(origMethod);
+	IMP originIMP = method_getImplementation(origMethod);
+	
+	SEL forwardingSEL = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageTemporary_%@_%@",
+																						NSStringFromClass(cls),
+																						NSStringFromSelector(origSEL)]);
+	
+	IMP forwardingIMP = imp_selector_bridge(forwardingSEL);
+	
+	method_setImplementation(origMethod, forwardingIMP);
+	
+	SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageFinal_%@_%@",
+																					NSStringFromClass(cls),
+																					NSStringFromSelector(origSEL)]);
+	
+	BOOL returnValue = class_addMethod(cls, newSelector, originIMP, origin_type);
+	
+	return returnValue;
+}
+
+BOOL ic_isInSkipList(NSString *methodName) {
+	
+	static NSArray *defaultBlackList = nil;
+	static dispatch_once_t onceToken;
+	
+	dispatch_once(&onceToken, ^{
+		defaultBlackList = @[/*UIViewController*/
+												 @".cxx_destruct",
+												 @"dealloc",
+												 @"_isDeallocating",
+												 @"release",
+												 @"autorelease",
+												 @"retain",
+												 @"Retain",
+												 @"_tryRetain",
+												 @"copy",
+												 /*UIView*/
+												 @"nsis_descriptionOfVariable:",
+												 /*NSObject*/
+												 @"respondsToSelector:",
+												 @"class",
+												 @"methodSignatureForSelector:",
+												 @"allowsWeakReference",
+												 @"retainWeakReference",
+												 @"init",
+												 @"forwardInvocation:",
+												 @"description",
+												 @"debugDescription",
+												 @"self",
+												 @"beginBackgroundTaskWithExpirationHandler:",
+												 @"beginBackgroundTaskWithName:expirationHandler:",
+												 @"endBackgroundTask:",
+												 @"lockFocus",
+												 @"lockFocusIfCanDraw",
+												 @"lockFocusIfCanDraw",
+												 @"setValue:forKey:"
+												 ];
+	});
+	
+	return ([defaultBlackList containsObject:methodName]);
+}
+
+void ic_logMethod(Class cls, BOOL(^condition)(SEL sel)) {
+	
+#ifndef DEBUG
+	return;
+#endif
+	
+	unsigned int methodCount;
+	Method *methods = class_copyMethodList(cls,&methodCount);
+	
+	for (int i = 0; i < methodCount; i ++) {
+		Method curMethod = *(methods + i);
+		SEL selector = method_getName(curMethod);
+		char *returnType = method_copyReturnType(curMethod);
+		
+		BOOL isCanHook = ic_isCanHook(curMethod, returnType);
+		
+		if (isCanHook && condition) {
+			isCanHook = condition(selector);
+		}
+		
+		if (isCanHook) {
+			
+			bool ret = ic_swizzleMethod(cls, selector);
+			
+			assert(ret);
+			
+			if (triggerForwardInvocation(cls, selector, returnType)) {
+				DEV_LOG(@"success hook method:%@ types:%s", NSStringFromSelector(selector), method_getDescription(curMethod)->types);
+			} else {
+				DEV_LOG(@"fail method:%@ types:%s", NSStringFromSelector(selector), method_getDescription(curMethod)->types);
+			}
+		} else {
+			DEV_LOG(@"can not hook method:%@ types:%s", NSStringFromSelector(selector), method_getDescription(curMethod)->types);
+		}
+		free(returnType);
+		returnType = NULL;
+	}
+	free(methods);
+	methods = NULL;
 }

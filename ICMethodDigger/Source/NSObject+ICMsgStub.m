@@ -8,10 +8,40 @@
 
 #import "NSObject+ICMsgStub.h"
 #import "ICMessageStub.h"
+#import "ICMethodHelper.h"
 #import <objc/runtime.h>
 
-bool should_intercept_message(Class cls, SEL sel) {
-	return [NSStringFromSelector(sel) hasPrefix:@"__ICMessageTemporary"];
+@interface InterceptModel : NSObject
+
+@property (nonatomic, assign) BOOL status;
+
+@property (nonatomic, copy) NSString *targetClsName;
+
+@end
+
+@implementation InterceptModel
+
+@end
+
+BOOL isInterceptMessage(SEL selector) {
+	return [NSStringFromSelector(selector) hasPrefix:@"__ICMessageTemporary"];
+}
+
+InterceptModel* checkTargetSubclassMessage(NSObject *obj, SEL sel) {
+	NSArray *clsList = [ICMethodHelper sharedInstance].blockCache.allKeys;
+	InterceptModel *ret = [InterceptModel new];
+	
+	for (NSString *clsName in clsList) {
+		Class targetCls = NSClassFromString(clsName);
+		
+		if ([obj isKindOfClass:targetCls]) {
+			ret.status = true;
+			ret.targetClsName = clsName;
+			break;
+		}
+	}
+	
+	return ret;
 }
 
 /// Exchange IMP between originSEL and newSEL
@@ -28,6 +58,7 @@ void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 	
 }
 
+
 @implementation NSObject (ICMsgStub)
 
 + (void)load {
@@ -41,12 +72,27 @@ void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 
 /// Forward all messages to ICMessageStub, and ICMessageStub implements process logic
 - (id)ic_forwardingTargetForSelector:(SEL)temporarySEL {
-
-	if (should_intercept_message(object_getClass(self), temporarySEL) && ![self isKindOfClass:[ICMessageStub class]]) {
-		return [[ICMessageStub alloc] initWithTarget:self selector:temporarySEL];
+	
+	if (![self isKindOfClass:[ICMessageStub class]]) {
+		if (isInterceptMessage(temporarySEL)) {
+			return [[ICMessageStub alloc] initWithTarget:self selector:temporarySEL];
+		} else {
+			
+			InterceptModel *ret = checkTargetSubclassMessage(self, temporarySEL);
+			
+			if (ret.status) {
+				SEL newSEL = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageTemporary_%@_%@",
+																					 ret.targetClsName,
+																					 NSStringFromSelector(temporarySEL)]);
+				return [[ICMessageStub alloc] initWithTarget:self selector:newSEL];
+			} else {
+				return [self ic_forwardingTargetForSelector:temporarySEL];
+			}
+		}
+	} else {
+		return [self ic_forwardingTargetForSelector:temporarySEL];
 	}
 	
-	return [self ic_forwardingTargetForSelector:temporarySEL];
 }
 
 @end

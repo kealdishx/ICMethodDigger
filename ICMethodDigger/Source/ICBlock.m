@@ -21,9 +21,11 @@
 }
 
 - (void)rundBefore:(id)target sel:(SEL)sel args:(NSArray *)args deep:(int) deepth {
+	
 	if (self.before) {
 		self.before(target, sel, args, deepth);
 	}
+	
 }
 
 - (void)rundAfter:(id)target sel:(SEL)sel args:(NSArray *)args interval:(NSTimeInterval)interval deep:(int)deepth retValue:(id)retValue{
