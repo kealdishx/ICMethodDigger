@@ -80,7 +80,7 @@ void ic_logMethod(Class aClass, BOOL(^condition)(SEL sel));
 
 @interface ICMethodDigger()
 
-@property (strong, nonatomic) NSMutableDictionary *blockCache;
+@property (nonatomic, strong) NSMutableDictionary *blockCache;
 
 + (instancetype)sharedInstance;
 
@@ -257,18 +257,21 @@ BOOL ic_isCanHook(Method method, const char *returnType) {
 	return isCanHook;
 }
 
-//获取方法返回值
-id getReturnValue(NSInvocation *invocation){
+// Get method return value
+id getReturnValue(NSInvocation *invocation) {
+
 	const char *returnType = invocation.methodSignature.methodReturnType;
 	if (returnType[0] == 'r') {
 		returnType++;
 	}
-#define WRAP_GET_VALUE(type) \
-do { \
-type val = 0; \
-[invocation getReturnValue:&val]; \
-return @(val); \
-} while (0)
+
+	#define WRAP_GET_VALUE(type) \
+	do { \
+	type val = 0; \
+	[invocation getReturnValue:&val]; \
+	return @(val); \
+	} while (0)
+
 	if (strcmp(returnType, @encode(id)) == 0 || strcmp(returnType, @encode(Class)) == 0 || strcmp(returnType, @encode(void (^)(void))) == 0) {
 		__autoreleasing id returnObj;
 		[invocation getReturnValue:&returnObj];
@@ -304,6 +307,7 @@ return @(val); \
 	} else if (strcmp(returnType, @encode(void)) == 0) {
 		return @"void";
 	} else {
+
 		NSUInteger valueSize = 0;
 		NSGetSizeAndAlignment(returnType, &valueSize, NULL);
 		unsigned char valueBytes[valueSize];
@@ -314,8 +318,9 @@ return @(val); \
 	return nil;
 }
 
-//获取方法参数
+// Get method parameters
 NSArray *ic_method_arguments(NSInvocation *invocation) {
+
 	NSMethodSignature *methodSignature = [invocation methodSignature];
 	NSMutableArray *argList = (methodSignature.numberOfArguments > 2 ? [NSMutableArray array] : nil);
 	for (NSUInteger i = 2; i < methodSignature.numberOfArguments; i++) {
@@ -323,12 +328,12 @@ NSArray *ic_method_arguments(NSInvocation *invocation) {
 		id arg = nil;
 		
 		if (ic_isStructType(argumentType)) {
-#define GET_STRUCT_ARGUMENT(_type)\
-if (is##_type(argumentType)) {\
-_type arg_temp;\
-[invocation getArgument:&arg_temp atIndex:i];\
-arg = NSStringFrom##_type(arg_temp);\
-}
+		#define GET_STRUCT_ARGUMENT(_type)\
+		if (is##_type(argumentType)) {\
+		_type arg_temp;\
+		[invocation getArgument:&arg_temp atIndex:i];\
+		arg = NSStringFrom##_type(arg_temp);\
+		}
 			GET_STRUCT_ARGUMENT(CGRect)
 			else GET_STRUCT_ARGUMENT(CGPoint)
 				else GET_STRUCT_ARGUMENT(CGSize)
@@ -341,12 +346,14 @@ arg = NSStringFrom##_type(arg_temp);\
 										arg = @"{unknown}";
 									}
 		}
+		
 #define GET_ARGUMENT(_type)\
 if (0 == strcmp(argumentType, @encode(_type))) {\
 _type arg_temp;\
 [invocation getArgument:&arg_temp atIndex:i];\
 arg = @(arg_temp);\
 }
+		
 		else GET_ARGUMENT(char)
 			else GET_ARGUMENT(int)
 				else GET_ARGUMENT(short)
@@ -513,6 +520,7 @@ void ic_logMethod(Class aClass, BOOL(^condition)(SEL sel)) {
 #endif
 	
 	if (aClass) {
+
 		ICBlock *block = [[ICBlock alloc] init];
 		block.targetClassName = NSStringFromClass(aClass);
 		block.condition = condition;
@@ -523,7 +531,7 @@ void ic_logMethod(Class aClass, BOOL(^condition)(SEL sel)) {
 	
 	ic_logMethod(aClass, condition);
 	
-	//获取元类，处理类方法。（注意获取元类是用object_getClass，而不是class_getSuperclass）
+	/// Get meta class and handle class methods
 	Class metaClass = object_getClass(aClass);
 	ic_logMethod(metaClass, condition);
 }
@@ -552,11 +560,13 @@ void ic_logMethod(Class aClass, BOOL(^condition)(SEL sel)) {
 	ICBlock *block = [self.blockCache objectForKey:NSStringFromClass(class)];
 
 	while (block == nil) {
+		
 		class = [class superclass];
 		if (class == nil) {
 			break;
 		}
 		block = [self.blockCache objectForKey:NSStringFromClass(class)];
+		
 	}
 
 	return block;

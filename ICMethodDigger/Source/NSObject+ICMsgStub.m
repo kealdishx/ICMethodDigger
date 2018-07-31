@@ -11,7 +11,7 @@
 #import <objc/runtime.h>
 
 bool should_intercept_message(Class cls, SEL sel) {
-	return [NSStringFromSelector(sel) hasPrefix:@"__WZQMessageTemporary"];
+	return [NSStringFromSelector(sel) hasPrefix:@"__ICMessageTemporary"];
 }
 
 void method_swizzle(Class cls, SEL origSEL, SEL newSEL) {

@@ -17,7 +17,7 @@
 
 		_target = target;
 		
-		NSString *finalSELStr = [NSStringFromSelector(temporarySEL) stringByReplacingOccurrencesOfString:@"__WZQMessageTemporary_" withString:@"__WZQMessageFinal_"];
+		NSString *finalSELStr = [NSStringFromSelector(temporarySEL) stringByReplacingOccurrencesOfString:@"__ICMessageTemporary_" withString:@"__ICMessageFinal_"];
 		_selector = NSSelectorFromString(finalSELStr);
 	}
 	return self;
