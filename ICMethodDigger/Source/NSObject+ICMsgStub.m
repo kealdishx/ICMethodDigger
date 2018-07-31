@@ -14,12 +14,13 @@ bool should_intercept_message(Class cls, SEL sel) {
 	return [NSStringFromSelector(sel) hasPrefix:@"__ICMessageTemporary"];
 }
 
-void method_swizzle(Class cls, SEL origSEL, SEL newSEL) {
+/// Exchange IMP between originSEL and newSEL
+void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 
-	Method origMethod = class_getInstanceMethod(cls, origSEL);
+	Method origMethod = class_getInstanceMethod(cls, originSEL);
 	Method newMethod = class_getInstanceMethod(cls, newSEL);
 	
-	if (class_addMethod(cls, origSEL, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+	if (class_addMethod(cls, originSEL, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
 		class_replaceMethod(cls, newSEL, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
 	} else {
 		method_exchangeImplementations(origMethod, newMethod);

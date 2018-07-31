@@ -17,6 +17,8 @@
 		1B02D342210F3BC700738016 /* ICMethodDigger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B02D340210F3BC700738016 /* ICMethodDigger.m */; };
 		E01F9E0421102E2D0087B62F /* ICBridge_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = E01F9E0121102E2C0087B62F /* ICBridge_arm64.s */; };
 		E01F9E0521102E2D0087B62F /* ICIMPBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E01F9E0321102E2D0087B62F /* ICIMPBridge.m */; };
+		E01F9E0821104C820087B62F /* ICBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = E01F9E0721104C820087B62F /* ICBlock.m */; };
+		E01F9E0C211050040087B62F /* ICHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E01F9E0B211050040087B62F /* ICHandler.m */; };
 		E02AA818210F3CDE00CD54C6 /* NSObject+ICMsgStub.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */; };
 		E02AA81A210F3CDE00CD54C6 /* ICSwizzler.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA812210F3CDE00CD54C6 /* ICSwizzler.m */; };
 		E02AA81C210F3CDE00CD54C6 /* ICMessageStub.m in Sources */ = {isa = PBXBuildFile; fileRef = E02AA816210F3CDE00CD54C6 /* ICMessageStub.m */; };
@@ -51,6 +53,11 @@
 		E01F9E0121102E2C0087B62F /* ICBridge_arm64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = ICBridge_arm64.s; sourceTree = "<group>"; };
 		E01F9E0221102E2C0087B62F /* ICIMPBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICIMPBridge.h; sourceTree = "<group>"; };
 		E01F9E0321102E2D0087B62F /* ICIMPBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICIMPBridge.m; sourceTree = "<group>"; };
+		E01F9E0621104C820087B62F /* ICBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICBlock.h; sourceTree = "<group>"; };
+		E01F9E0721104C820087B62F /* ICBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ICBlock.m; sourceTree = "<group>"; };
+		E01F9E0921104E4F0087B62F /* ICDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICDefine.h; sourceTree = "<group>"; };
+		E01F9E0A211050040087B62F /* ICHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICHandler.h; sourceTree = "<group>"; };
+		E01F9E0B211050040087B62F /* ICHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ICHandler.m; sourceTree = "<group>"; };
 		E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ICMsgStub.m"; sourceTree = "<group>"; };
 		E02AA812210F3CDE00CD54C6 /* ICSwizzler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICSwizzler.m; sourceTree = "<group>"; };
 		E02AA813210F3CDE00CD54C6 /* ICSwizzler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICSwizzler.h; sourceTree = "<group>"; };
@@ -126,6 +133,9 @@
 			children = (
 				1B02D341210F3BC700738016 /* ICMethodDigger.h */,
 				1B02D340210F3BC700738016 /* ICMethodDigger.m */,
+				E01F9E0921104E4F0087B62F /* ICDefine.h */,
+				E01F9E0621104C820087B62F /* ICBlock.h */,
+				E01F9E0721104C820087B62F /* ICBlock.m */,
 				E01F9E0121102E2C0087B62F /* ICBridge_arm64.s */,
 				E01F9E0221102E2C0087B62F /* ICIMPBridge.h */,
 				E01F9E0321102E2D0087B62F /* ICIMPBridge.m */,
@@ -133,6 +143,8 @@
 				E02AA816210F3CDE00CD54C6 /* ICMessageStub.m */,
 				E02AA813210F3CDE00CD54C6 /* ICSwizzler.h */,
 				E02AA812210F3CDE00CD54C6 /* ICSwizzler.m */,
+				E01F9E0A211050040087B62F /* ICHandler.h */,
+				E01F9E0B211050040087B62F /* ICHandler.m */,
 				E02AA817210F3CDE00CD54C6 /* NSObject+ICMsgStub.h */,
 				E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */,
 			);
@@ -239,9 +251,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E01F9E0C211050040087B62F /* ICHandler.m in Sources */,
 				1B02D320210F3B4600738016 /* ViewController.m in Sources */,
 				1B02D32B210F3B4700738016 /* main.m in Sources */,
 				E02AA81C210F3CDE00CD54C6 /* ICMessageStub.m in Sources */,
+				E01F9E0821104C820087B62F /* ICBlock.m in Sources */,
 				E01F9E0421102E2D0087B62F /* ICBridge_arm64.s in Sources */,
 				1B02D342210F3BC700738016 /* ICMethodDigger.m in Sources */,
 				E02AA818210F3CDE00CD54C6 /* NSObject+ICMsgStub.m in Sources */,

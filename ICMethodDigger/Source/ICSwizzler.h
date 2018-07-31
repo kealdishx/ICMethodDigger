@@ -9,3 +9,5 @@
 #import <Foundation/Foundation.h>
 
 FOUNDATION_EXTERN void ic_addSwizzle(Class cls);
+
+FOUNDATION_EXTERN BOOL ic_isInSkipList(NSString *methodName);

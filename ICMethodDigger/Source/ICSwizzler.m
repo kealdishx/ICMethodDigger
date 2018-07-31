@@ -10,7 +10,7 @@
 #import "ICIMPBridge.h"
 #import <objc/runtime.h>
 
-bool ic_swizzleMethod(Class cls, SEL origSEL) {
+BOOL ic_swizzleMethod(Class cls, SEL origSEL) {
 
 	Method origMethod = class_getInstanceMethod(cls, origSEL);
 	if (!origMethod) return false;
@@ -29,7 +29,6 @@ bool ic_swizzleMethod(Class cls, SEL origSEL) {
 	SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageFinal_%@_%@",
 																					NSStringFromClass(cls),
 																					NSStringFromSelector(origSEL)]);
-	
 	
 	return class_addMethod(cls, newSelector, originIMP, origin_type);
 }

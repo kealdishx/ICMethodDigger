@@ -7,12 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ICDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef BOOL (^ICConditionBlock)(SEL sel);
-typedef void (^ICBeforeBlock)(id target, SEL sel, NSArray *args, int deep);
-typedef void (^ICAfterBlock)(id target, SEL sel, NSArray *args, NSTimeInterval interval, int deep, id retValue);
 
 @interface ICMethodDigger : NSObject
 
