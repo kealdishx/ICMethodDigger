@@ -13,11 +13,11 @@ Pod::Spec.new do |s|
   s.frameworks   = 'UIKit', 'Foundation'
   s.platform     = :ios, '8.0'
 
-  other_frameworks =  ['UIKit', 'Foundation']
+ # other_frameworks =  ['UIKit', 'Foundation']
   
-  other_ldflags = '$(inherited) -framework ' + other_frameworks.join(' -framework ') + 
+ # other_ldflags = '$(inherited) -framework ' + other_frameworks.join(' -framework ') + 
     ' -lz -lstdc++'
 
-  s.xcconfig     = {  'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags, 'NATIVE_ARCH' => '"arm64"', 'CURRENT_ARCH' => '"arm64"', 'VALID_ARCHS' => '"arm64"'}
+ # s.xcconfig     = {  'OTHER_LDFLAGS[arch=arm64]'  => other_ldflags, 'NATIVE_ARCH' => '"arm64"', 'CURRENT_ARCH' => '"arm64"', 'VALID_ARCHS' => '"arm64"'}
 
 end

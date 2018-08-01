@@ -14,13 +14,12 @@
 #import <mach/vm_map.h>
 #import <mach/mach_init.h>
 
-id ic_forwarding_bridge_page(id, SEL);
-
 typedef struct {
 	SEL selector;
 } ICBridgeBlock;
 
 #if defined(__arm64__)
+id ic_forwarding_bridge_page(id, SEL);
 typedef int32_t ICForwardingBridgeEntryPointBlock[2];
 static const int32_t ICForwardingBridgeInstructionCount = 6;
 #else
@@ -50,7 +49,11 @@ typedef struct {
 
 static ICBridgePage *ICBridgePageAlloc() {
 
-	vm_address_t bridgeTemplatePage = (vm_address_t)&ic_forwarding_bridge_page;
+  #if defined(__arm64__)
+  vm_address_t bridgeTemplatePage = (vm_address_t)&ic_forwarding_bridge_page;
+  #else
+  vm_address_t bridgeTemplatePage = 0;
+  #endif
 
 	vm_address_t newBridgePage = 0;
 	kern_return_t kernReturn = KERN_SUCCESS;
