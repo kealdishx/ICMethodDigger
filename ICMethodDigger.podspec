@@ -5,11 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/iiiCeBlink/ICMethodDigger"
   s.license      = "MIT"
   s.author       = { "iiiCeBlink" => "zakariyyasv@gmail.com" }
-<<<<<<< HEAD
   s.source       = { :git => "https://github.com/iiiCeBlink/ICMethodDigger.git", :tag => '1.0.1'}
-=======
-  s.source       = { :git => "https://github.com/iiiCeBlink/ICMethodDigger.git" :tag => '1.0.1'}
->>>>>>> 870aee59b913c3a5c849240d33ccfff7c11a0d96
   s.source_files = "ICMethodDigger/Source/*.{h,m,s}", "ICMethodDigger/Source/PublicHeader/*.h"
   s.module_name  = "ICMethodDigger"
   s.private_header_files = "ICMethodDigger/Source/*.h"
