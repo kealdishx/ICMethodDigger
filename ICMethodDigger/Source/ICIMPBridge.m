@@ -24,7 +24,9 @@ typedef struct {
 typedef int32_t ICForwardingBridgeEntryPointBlock[2];
 static const int32_t ICForwardingBridgeInstructionCount = 6;
 #else
-#error Not support x86_64 armv7 armv7s yet
+/// It's fake.
+typedef int32_t ICForwardingBridgeEntryPointBlock[2];
+static const int32_t ICForwardingBridgeInstructionCount = 1;
 #endif
 
 static const size_t numberOfBridgePerPage = (16384 - ICForwardingBridgeInstructionCount * sizeof(int32_t)) / sizeof(ICForwardingBridgeEntryPointBlock);
