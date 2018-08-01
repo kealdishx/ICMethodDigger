@@ -34,7 +34,8 @@ InterceptModel* checkTargetSubclassMessage(NSObject *obj, SEL sel) {
 	for (NSString *clsName in clsList) {
 		Class targetCls = NSClassFromString(clsName);
 		
-		if ([obj isKindOfClass:targetCls]) {
+    // find obj superclass
+		if ([obj isKindOfClass:targetCls] && ![obj isMemberOfClass:targetCls]) {
 			ret.status = true;
 			ret.targetClsName = clsName;
 			break;
