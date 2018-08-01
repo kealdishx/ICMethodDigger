@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ICMethodDigger.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
+//	[self logAllMethods];
 	[self logRunningMethods];
 	
   return YES;
@@ -24,7 +26,7 @@
 
 - (void)logAllMethods {
 	
-	icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
+	icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 		NSLog(@"%@", NSStringFromSelector(sel));
 		return NO;
 	}, ^(id target, SEL sel, NSArray *args) {

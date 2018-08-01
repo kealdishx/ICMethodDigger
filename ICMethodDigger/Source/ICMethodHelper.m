@@ -39,6 +39,9 @@
 	
 	ic_logMethod(aClass, condition);
 	
+	/// Get meta class to handle class methods
+	Class metaCls = object_getClass(aClass);
+	ic_logMethod(metaCls, condition);
 }
 
 + (instancetype)sharedInstance {

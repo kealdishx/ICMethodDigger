@@ -428,7 +428,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = iiiCeBlink.ICMethodDigger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7s armv7";
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -447,7 +447,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = iiiCeBlink.ICMethodDigger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7s armv7";
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};

@@ -12,6 +12,7 @@
 #import <objc/message.h>
 #import <UIKit/UIKit.h>
 
+/// Use to debug
 //#define OPEN_DEV_LOG
 
 #ifdef OPEN_DEV_LOG
@@ -81,7 +82,7 @@ BOOL ic_isCanHook(Method method, const char *returnType) {
 		isCanHook = NO;
 	}
 	
-	for(int k = 2 ; k < method_getNumberOfArguments(method); k ++) {
+	for(int k = 2 ; k < method_getNumberOfArguments(method); k++) {
 		char argument[250];
 		memset(argument, 0, sizeof(argument));
 		method_getArgumentType(method, k, argument, sizeof(argument));
@@ -273,8 +274,11 @@ NSArray *ic_method_arguments(NSInvocation *invocation) {
 }
 
 BOOL triggerForwardInvocation(Class cls, SEL selector, char *returnType) {
+	Method method = nil;
 	
-	Method method = class_getInstanceMethod(cls, selector);
+	/// For meta class, class_getInstanceMethod() and class_getClassMethod() are same.
+	method = class_getInstanceMethod(cls, selector);
+
 	
 	if (method == nil) {
 		return NO;
