@@ -131,11 +131,10 @@
 		1B02D33F210F3BA400738016 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				1B02D341210F3BC700738016 /* ICMethodDigger.h */,
+				1B02D3432111E59200738016 /* PublicHeader */,
 				1B02D340210F3BC700738016 /* ICMethodDigger.m */,
 				E01F9E0D2110ACA50087B62F /* ICMethodHelper.h */,
 				E01F9E0E2110ACA50087B62F /* ICMethodHelper.m */,
-				E01F9E0921104E4F0087B62F /* ICDefine.h */,
 				E01F9E0621104C820087B62F /* ICBlock.h */,
 				E01F9E0721104C820087B62F /* ICBlock.m */,
 				E01F9E0121102E2C0087B62F /* ICBridge_arm64.s */,
@@ -149,6 +148,15 @@
 				E02AA80F210F3CDD00CD54C6 /* NSObject+ICMsgStub.m */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		1B02D3432111E59200738016 /* PublicHeader */ = {
+			isa = PBXGroup;
+			children = (
+				E01F9E0921104E4F0087B62F /* ICDefine.h */,
+				1B02D341210F3BC700738016 /* ICMethodDigger.h */,
+			);
+			path = PublicHeader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -418,7 +426,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6LPEZ2ZQ2Z;
+				DEVELOPMENT_TEAM = 5CC32BR467;
 				INFOPLIST_FILE = ICMethodDigger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -437,7 +445,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6LPEZ2ZQ2Z;
+				DEVELOPMENT_TEAM = 5CC32BR467;
 				INFOPLIST_FILE = ICMethodDigger/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
