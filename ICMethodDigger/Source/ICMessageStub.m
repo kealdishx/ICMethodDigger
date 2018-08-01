@@ -14,8 +14,6 @@
 
 @implementation ICMessageStub
 
-static int deepth = -1;
-
 - (instancetype)initWithTarget:(id)target selector:(SEL)temporarySEL {
 
 	if (self = [super init]) {
@@ -53,10 +51,8 @@ static int deepth = -1;
 	NSString *originSELstr = [NSStringFromSelector(self.selector) stringByReplacingOccurrencesOfString:@"__ICMessageFinal_" withString:@""];
 	SEL originSEL = NSSelectorFromString(originSELstr);
 	
-	deepth++;
-	
 	ICBlock *block = [[ICMethodHelper sharedInstance] blockWithTarget:self.target];
-	[block rundBefore:self.target sel:originSEL args:args deep:deepth];
+	[block rundBefore:self.target sel:originSEL args:args];
 	
 	NSTimeInterval start = CFAbsoluteTimeGetCurrent();
 	
@@ -64,9 +60,8 @@ static int deepth = -1;
 	
 	NSTimeInterval interval = CFAbsoluteTimeGetCurrent() - start;
 	
-	[block rundAfter:self.target sel:originSEL args:args interval:interval deep:deepth retValue:getReturnValue(anInvocation)];
+	[block rundAfter:self.target sel:originSEL args:args interval:interval retValue:getReturnValue(anInvocation)];
 	
-	deepth--;
 }
 
 @end

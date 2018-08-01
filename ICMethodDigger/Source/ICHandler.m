@@ -59,11 +59,9 @@ NSDictionary *ic_canHandleTypeDic() {
 	return dic;
 }
 
-//根据定义的类型的判断是否能处理
 BOOL ic_isCanHandle(NSString *typeEncode) {
 	return [ic_canHandleTypeDic().allKeys containsObject:typeEncode];
 }
-
 
 BOOL ic_isCanHook(Method method, const char *returnType) {
 	
@@ -99,13 +97,11 @@ BOOL ic_isCanHook(Method method, const char *returnType) {
 	return isCanHook;
 }
 
-//是否struct类型
 BOOL ic_isStructType(const char *argumentType) {
 	NSString *typeString = [NSString stringWithUTF8String:argumentType];
 	return ([typeString hasPrefix:@"{"] && [typeString hasSuffix:@"}"]);
 }
 
-//struct类型名
 NSString *ic_structName(const char *argumentType) {
 	
 	NSString *typeString = [NSString stringWithUTF8String:argumentType];
@@ -300,8 +296,6 @@ BOOL triggerForwardInvocation(Class cls, SEL selector, char *returnType) {
 }
 
 BOOL ic_swizzleMethod(Class cls, SEL origSEL) {
-	
-	NSLog(@"%@",NSStringFromSelector(origSEL));
 	
 	Method origMethod = class_getInstanceMethod(cls, origSEL);
 	if (!origMethod) return false;

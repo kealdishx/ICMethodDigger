@@ -23,9 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)runCondition:(SEL)sel;
 
-- (void)rundBefore:(id)target sel:(SEL)sel args:(NSArray *)args deep:(int)deepth;
+- (void)rundBefore:(id)target sel:(SEL)sel args:(NSArray *)args;
 
-- (void)rundAfter:(id)target sel:(SEL)sel args:(NSArray *)args interval:(NSTimeInterval)interval deep:(int)deepth retValue:(id)retValue;
+- (void)rundAfter:(id)target sel:(SEL)sel args:(NSArray *)args interval:(NSTimeInterval)interval retValue:(id)retValue;
 
 @end
 

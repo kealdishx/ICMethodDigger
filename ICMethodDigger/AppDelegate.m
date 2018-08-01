@@ -27,9 +27,9 @@
 	icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
 		NSLog(@"%@", NSStringFromSelector(sel));
 		return NO;
-	}, ^(id target, SEL sel, NSArray *args, int deep) {
+	}, ^(id target, SEL sel, NSArray *args) {
 		NSLog(@"target:%@ sel:%@", target, NSStringFromSelector(sel));
-	}, ^(id target, SEL sel, NSArray *args, NSTimeInterval interval, int deep, id retValue) {
+	}, ^(id target, SEL sel, NSArray *args, NSTimeInterval interval, id retValue) {
 
 	});
 }
@@ -37,9 +37,9 @@
 - (void)logRunningMethods {
 	icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
 		return YES;
-	}, ^(id target, SEL sel, NSArray *args, int deep) {
+	}, ^(id target, SEL sel, NSArray *args) {
 		
-	}, ^(id target, SEL sel, NSArray *args, NSTimeInterval interval, int deep, id retValue) {
+	}, ^(id target, SEL sel, NSArray *args, NSTimeInterval interval, id retValue) {
 		NSLog(@"target:%@ sel:%@ interval: %f", target, NSStringFromSelector(sel), interval);
 	});
 }

@@ -10,7 +10,7 @@
 #define ICDefine_h
 
 typedef BOOL (^ICConditionBlock)(SEL selector);
-typedef void (^ICBeforeBlock)(id target, SEL sel, NSArray *args, int deep);
-typedef void (^ICAfterBlock)(id target, SEL sel, NSArray *args, NSTimeInterval interval, int deep, id retValue);
+typedef void (^ICBeforeBlock)(id target, SEL sel, NSArray *args);
+typedef void (^ICAfterBlock)(id target, SEL sel, NSArray *args, NSTimeInterval interval, id retValue);
 
 #endif /* ICDefine_h */
