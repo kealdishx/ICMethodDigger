@@ -1,13 +1,13 @@
-# ICMethodDigger [中文说明](https://github.com/iiiCeBlink/ICMethodDigger/blob/master/README_CN.md)
+# ICMethodDigger 
 
-An easy way to print almost methods including private methods (supported arm64 architecture devices).
+以简便的方式打印几乎所有的公有和私有方法，目前支持 arm64 架构的设备。
 
-## Requirements
+## 要求
 
 - iOS 8.0+
 - arm64 Device
 
-## Installation
+## 安装
 
 ### Pod
 
@@ -15,25 +15,25 @@ An easy way to print almost methods including private methods (supported arm64 a
 pod 'ICMethodDigger'
 ```
 
-### Manually
+### 手动安装
 
-Drag all files under `Source` folder to your project, and **set build architecture to `arm64`**.
+将 `Source` 目录下的所有文件拖拽到项目中，并且**将编译架构设置为 `arm64`**。
 
 ## Usage
 
-### 1. import `ICMethodDigger.h` to your target file like this:
+### 1. 在目标文件中导入 `ICMethodDigger.h`:
 
 ```Objectivec
 #import "ICMethodDigger.h"
 ```
 
-### 2. call `icm_logMethod` method to log what you want:
+### 2. 在你想要调用的地方调用 `icm_logMethod` 方法去打印日志:
 
 ```Objectivec
 FOUNDATION_EXTERN void icm_logMethod(Class cls, ICConditionBlock condition, _Nullable ICBeforeBlock before, _Nullable ICAfterBlock after);
 ```
 
-- **log all methods of target class**
+- **打印目标类所有的方法**
 
 ```Objectivec
 icm_logMethod([ViewController class], ^BOOL(SEL sel) {
@@ -42,7 +42,7 @@ icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 	}, nil, nil);
 ```
 
-- **log methods of target class at running**
+- **打印运行时类所执行的方法**
 
 ```Objectivec
 icm_logMethod([ViewController class], ^BOOL(SEL sel) {
@@ -51,7 +51,7 @@ icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 	}, nil, nil);
 ```
 
-- **log cost time of method**
+- **打印方法执行的耗时时长**
 
 ```Objectivec
 icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
@@ -61,17 +61,17 @@ icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
 	});
 ```
 
-### 3. Connect `arm64` device to your project, and then build and run. 
+### 3. 将 `arm64` 架构的手机连接到你的项目中，然后编译运行。
 
-## Contributing
+## 贡献
 
-Issues and pull requests are welcome!
+欢迎提 issue 和 PR。
 
-## Acknowledgements
+## 致谢
 
 - [ANYMethodLog](https://github.com/qhd/ANYMethodLog)
 - [MainThreadChecker](https://github.com/SatanWoo/MainThreadChecker)
 
-## LICENSE
+## 许可证
 
-ICMethodDigger is available under the MIT license. See the LICENSE file for more info.
+ICMethodDigger 遵循 MIT 许可证， 查看 LICENSE 文件获取更多信息。
