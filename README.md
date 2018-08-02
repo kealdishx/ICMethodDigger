@@ -9,31 +9,31 @@ An easy way to print almost methods including private methods (supported arm64 a
 
 ## Installation
 
-### Pod
+#### Pod
 
 ```
 pod 'ICMethodDigger'
 ```
 
-### Manually
+##### Manually
 
 Drag all files under `Source` folder to your project, and **set build architecture to `arm64`**.
 
 ## Usage
 
-### 1. import `ICMethodDigger.h` to your target file like this:
+#### 1. import `ICMethodDigger.h` to your target file like this:
 
 ```Objectivec
 #import "ICMethodDigger.h"
 ```
 
-### 2. call `icm_logMethod` method to log what you want:
+#### 2. call `icm_logMethod` method to log what you want:
 
 ```Objectivec
 FOUNDATION_EXTERN void icm_logMethod(Class cls, ICConditionBlock condition, _Nullable ICBeforeBlock before, _Nullable ICAfterBlock after);
 ```
 
-- **log all methods of target class**
+- ##### log all methods of target class
 
 ```Objectivec
 icm_logMethod([ViewController class], ^BOOL(SEL sel) {
@@ -42,7 +42,7 @@ icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 	}, nil, nil);
 ```
 
-- **log methods of target class at running**
+- ##### log methods of target class at running
 
 ```Objectivec
 icm_logMethod([ViewController class], ^BOOL(SEL sel) {
@@ -51,7 +51,7 @@ icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 	}, nil, nil);
 ```
 
-- **log cost time of method**
+- ##### log cost time of method
 
 ```Objectivec
 icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
@@ -61,7 +61,7 @@ icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
 	});
 ```
 
-### 3. Connect `arm64` device to your project, and then build and run. 
+#### 3. Connect `arm64` device to your project, and then build and run. 
 
 ## Contributing
 

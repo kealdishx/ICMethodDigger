@@ -21,19 +21,19 @@ pod 'ICMethodDigger'
 
 ## Usage
 
-### 1. 在目标文件中导入 `ICMethodDigger.h`:
+##### 1. 在目标文件中导入 `ICMethodDigger.h`:
 
 ```Objectivec
 #import "ICMethodDigger.h"
 ```
 
-### 2. 在你想要调用的地方调用 `icm_logMethod` 方法去打印日志:
+#### 2. 在你想要调用的地方调用 `icm_logMethod` 方法去打印日志:
 
 ```Objectivec
 FOUNDATION_EXTERN void icm_logMethod(Class cls, ICConditionBlock condition, _Nullable ICBeforeBlock before, _Nullable ICAfterBlock after);
 ```
 
-- **打印目标类所有的方法**
+- ##### 打印目标类所有的方法
 
 ```Objectivec
 icm_logMethod([ViewController class], ^BOOL(SEL sel) {
@@ -42,7 +42,7 @@ icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 	}, nil, nil);
 ```
 
-- **打印运行时类所执行的方法**
+- ##### 打印运行时类所执行的方法
 
 ```Objectivec
 icm_logMethod([ViewController class], ^BOOL(SEL sel) {
@@ -51,7 +51,7 @@ icm_logMethod([ViewController class], ^BOOL(SEL sel) {
 	}, nil, nil);
 ```
 
-- **打印方法执行的耗时时长**
+- ##### 打印方法执行的耗时时长
 
 ```Objectivec
 icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
@@ -61,7 +61,7 @@ icm_logMethod([UIViewController class], ^BOOL(SEL sel) {
 	});
 ```
 
-### 3. 将 `arm64` 架构的手机连接到你的项目中，然后编译运行。
+#### 3. 将 `arm64` 架构的手机连接到你的项目中，然后编译运行。
 
 ## 贡献
 
