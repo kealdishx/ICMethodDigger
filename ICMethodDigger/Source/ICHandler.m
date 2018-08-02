@@ -13,7 +13,7 @@
 #import <UIKit/UIKit.h>
 
 /// Use to debug
-#define OPEN_DEV_LOG
+//#define OPEN_DEV_LOG
 
 #ifdef OPEN_DEV_LOG
 #define DEV_LOG(format, ...) NSLog(format, ## __VA_ARGS__)
