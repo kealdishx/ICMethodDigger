@@ -27,7 +27,7 @@ BOOL isInterceptMessage(SEL selector) {
 	return [NSStringFromSelector(selector) hasPrefix:@"__ICMessageTemporary"];
 }
 
-InterceptModel* checkTargetSubclassMessage(NSObject *obj, SEL sel) {
+InterceptModel* checkTargetSubclassMessageForInstance(NSObject *obj, SEL sel) {
 	NSArray *clsList = [ICMethodHelper sharedInstance].blockCache.allKeys;
 	InterceptModel *ret = [InterceptModel new];
 	
@@ -36,6 +36,24 @@ InterceptModel* checkTargetSubclassMessage(NSObject *obj, SEL sel) {
 		
     // find obj superclass
 		if ([obj isKindOfClass:targetCls] && ![obj isMemberOfClass:targetCls]) {
+			ret.status = true;
+			ret.targetClsName = clsName;
+			break;
+		}
+	}
+	
+	return ret;
+}
+
+InterceptModel* checkTargetSubclassMessageForcls(Class cls, SEL sel) {
+	NSArray *clsList = [ICMethodHelper sharedInstance].blockCache.allKeys;
+	InterceptModel *ret = [InterceptModel new];
+	
+	for (NSString *clsName in clsList) {
+		Class targetCls = NSClassFromString(clsName);
+		
+		// find obj superclass
+		if ([cls isSubclassOfClass:targetCls]) {
 			ret.status = true;
 			ret.targetClsName = clsName;
 			break;
@@ -66,20 +84,22 @@ void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		method_swizzle(self, @selector(forwardingTargetForSelector:), @selector(ic_forwardingTargetForSelector:));
+		method_swizzle(self, @selector(forwardingTargetForSelector:), @selector(ic_instanceForwardingTargetForSelector:));
+		method_swizzle(object_getClass([self class]), @selector(forwardingTargetForSelector:), @selector(ic_classForwardingTargetForSelector:));
 	});
 
 }
 
 /// Forward all messages to ICMessageStub, and ICMessageStub implements process logic
-- (id)ic_forwardingTargetForSelector:(SEL)temporarySEL {
+- (id)ic_instanceForwardingTargetForSelector:(SEL)temporarySEL {
 	
 	if (![self isKindOfClass:[ICMessageStub class]]) {
+
 		if (isInterceptMessage(temporarySEL)) {
 			return [[ICMessageStub alloc] initWithTarget:self selector:temporarySEL];
 		} else {
 			
-			InterceptModel *ret = checkTargetSubclassMessage(self, temporarySEL);
+			InterceptModel *ret = checkTargetSubclassMessageForInstance(self, temporarySEL);
 			
 			if (ret.status) {
 				SEL newSEL = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageTemporary_%@_%@",
@@ -87,13 +107,37 @@ void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 																					 NSStringFromSelector(temporarySEL)]);
 				return [[ICMessageStub alloc] initWithTarget:self selector:newSEL];
 			} else {
-				return [self ic_forwardingTargetForSelector:temporarySEL];
+				return [self ic_instanceForwardingTargetForSelector:temporarySEL];
 			}
 		}
 	} else {
-		return [self ic_forwardingTargetForSelector:temporarySEL];
+		return [self ic_instanceForwardingTargetForSelector:temporarySEL];
 	}
 	
+}
+
++ (id)ic_classForwardingTargetForSelector:(SEL)temporarySEL {
+
+	if (![[self class] isSubclassOfClass:[ICMessageStub class]]) {
+		
+		if (isInterceptMessage(temporarySEL)) {
+			return [[ICMessageStub alloc] initWithTarget:self selector:temporarySEL];
+		} else {
+			
+			InterceptModel *ret = checkTargetSubclassMessageForcls([self class], temporarySEL);
+			
+			if (ret.status) {
+				SEL newSEL = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageTemporary_%@_%@",
+																					 ret.targetClsName,
+																					 NSStringFromSelector(temporarySEL)]);
+				return [[ICMessageStub alloc] initWithTarget:[self class] selector:newSEL];
+			} else {
+				return [self ic_classForwardingTargetForSelector:temporarySEL];
+			}
+		}
+	} else {
+		return [self ic_classForwardingTargetForSelector:temporarySEL];
+	}
 }
 
 @end

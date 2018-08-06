@@ -40,7 +40,6 @@
 	ic_logMethod(aClass, condition);
 	
 	/// Get meta class to handle class methods
-  /// TODO: support class methods
   Class metaCls = object_getClass(aClass);
   ic_logMethod(metaCls, condition);
 }
