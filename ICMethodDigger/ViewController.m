@@ -19,5 +19,9 @@
   // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+	return nil;
+}
+
 
 @end

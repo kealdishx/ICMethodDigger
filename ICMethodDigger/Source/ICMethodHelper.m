@@ -41,8 +41,8 @@
 	
 	/// Get meta class to handle class methods
   /// TODO: support class methods
-//  Class metaCls = object_getClass(aClass);
-//  ic_logMethod(metaCls, condition);
+  Class metaCls = object_getClass(aClass);
+  ic_logMethod(metaCls, condition);
 }
 
 + (instancetype)sharedInstance {

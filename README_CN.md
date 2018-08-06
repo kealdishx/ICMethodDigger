@@ -21,7 +21,7 @@ pod 'ICMethodDigger'
 
 ## Usage
 
-##### 1. 在目标文件中导入 `ICMethodDigger.h`:
+#### 1. 在目标文件中导入 `ICMethodDigger.h`:
 
 ```Objectivec
 #import "ICMethodDigger.h"

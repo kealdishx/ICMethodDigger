@@ -13,7 +13,7 @@
 #import <UIKit/UIKit.h>
 
 /// Use to debug
-//#define OPEN_DEV_LOG
+#define OPEN_DEV_LOG
 
 #ifdef OPEN_DEV_LOG
 #define DEV_LOG(format, ...) NSLog(format, ## __VA_ARGS__)
@@ -330,7 +330,7 @@ BOOL ic_isInSkipList(NSString *methodName) {
 	static dispatch_once_t onceToken;
 	
 	dispatch_once(&onceToken, ^{
-		defaultBlackList = @[/*UIViewController*/
+		defaultBlackList = @[/* UIViewController */
 												 @".cxx_destruct",
 												 @"dealloc",
 												 @"_isDeallocating",
@@ -340,9 +340,9 @@ BOOL ic_isInSkipList(NSString *methodName) {
 												 @"Retain",
 												 @"_tryRetain",
 												 @"copy",
-												 /*UIView*/
+												 /* UIView */
 												 @"nsis_descriptionOfVariable:",
-												 /*NSObject*/
+												 /* NSObject */
 												 @"respondsToSelector:",
 												 @"class",
 												 @"methodSignatureForSelector:",
@@ -393,12 +393,12 @@ void ic_logMethod(Class cls, BOOL(^condition)(SEL sel)) {
 			assert(ret);
 			
 			if (triggerForwardInvocation(cls, selector, returnType)) {
-				DEV_LOG(@"success hook cls: %@ method:%@ types:%s", NSStringFromClass(cls), NSStringFromSelector(selector), method_getDescription(curMethod)->types);
+				DEV_LOG(@"success hook cls: %@ method: %@ types: %s", NSStringFromClass(cls), NSStringFromSelector(selector), method_getDescription(curMethod)->types);
 			} else {
-        DEV_LOG(@"fail hook cls: %@ method:%@ types:%s", NSStringFromClass(cls), NSStringFromSelector(selector), method_getDescription(curMethod)->types);
+        DEV_LOG(@"fail hook cls: %@ method: %@ types: %s", NSStringFromClass(cls), NSStringFromSelector(selector), method_getDescription(curMethod)->types);
 			}
 		} else {
-      DEV_LOG(@"can not hook cls: %@ method:%@ types:%s", NSStringFromClass(cls), NSStringFromSelector(selector), method_getDescription(curMethod)->types);
+      DEV_LOG(@"can not hook cls: %@ method: %@ types: %s", NSStringFromClass(cls), NSStringFromSelector(selector), method_getDescription(curMethod)->types);
 		}
 		free(returnType);
 		returnType = NULL;
