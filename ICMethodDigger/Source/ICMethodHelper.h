@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ICMethodHelper : NSObject
 
 + (void)logMethodWithClass:(Class)aClass
-								 condition:(ICConditionBlock)condition
-										before:(nullable ICBeforeBlock)before
-										 after:(nullable ICAfterBlock)after;
+                 condition:(ICConditionBlock)condition
+                    before:(nullable ICBeforeBlock)before
+                     after:(nullable ICAfterBlock)after;
 
 + (instancetype)sharedInstance;
 

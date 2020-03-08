@@ -273,6 +273,7 @@ NSArray *ic_method_arguments(NSInvocation *invocation) {
 	return argList;
 }
 
+// 将 selector 的 IMP 替换为消息转发的 IMP
 BOOL triggerForwardInvocation(Class cls, SEL selector, char *returnType) {
 	Method method = nil;
 	
@@ -307,14 +308,18 @@ BOOL ic_swizzleMethod(Class cls, SEL origSEL) {
 	const char *origin_type = method_getTypeEncoding(origMethod);
 	IMP originIMP = method_getImplementation(origMethod);
 	
+    // 将类和 SEL 信息填入到新的 selector 中
 	SEL forwardingSEL = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageTemporary_%@_%@",
 																						NSStringFromClass(cls),
 																						NSStringFromSelector(origSEL)]);
 	
 	IMP forwardingIMP = imp_selector_bridge(forwardingSEL);
-	
+	// 将方法的 IMP 替换为桥上的 IMP
 	method_setImplementation(origMethod, forwardingIMP);
 	
+    // 将类和 SEL 信息生成新的 selector 并添加到类的方法列表以便后面判断该方法是否已 hook
+    // 将原 IMP 的指针也绑定到这上面
+    // __ICMessageFinal 用于存储方法的所有信息，包括 cls、sel、param、retType、imp。
 	SEL newSelector = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageFinal_%@_%@",
 																					NSStringFromClass(cls),
 																					NSStringFromSelector(origSEL)]);

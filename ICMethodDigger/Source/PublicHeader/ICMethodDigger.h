@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 #import "ICDefine.h"
 
-FOUNDATION_EXTERN void icm_logMethod(Class cls, ICConditionBlock condition, _Nullable ICBeforeBlock before, _Nullable ICAfterBlock after);
+FOUNDATION_EXTERN void icm_logMethod(Class _Nonnull cls, ICConditionBlock _Nullable condition, _Nullable ICBeforeBlock before, _Nullable ICAfterBlock after);
 

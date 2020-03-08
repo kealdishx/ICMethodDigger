@@ -12,6 +12,8 @@
 
 @interface ICMethodHelper()
 
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
+
 - (void)setICBlock:(ICBlock *)block forKey:(NSString *)aKey;
 
 @end
@@ -20,9 +22,9 @@
 
 #pragma mark - Class Methods
 + (void)logMethodWithClass:(Class)aClass
-								 condition:(ICConditionBlock) condition
-										before:(ICBeforeBlock) before
-										 after:(ICAfterBlock) after {
+                 condition:(ICConditionBlock)condition
+                    before:(ICBeforeBlock)before
+                     after:(ICAfterBlock)after {
 #ifndef DEBUG
 	return;
 #endif
@@ -40,8 +42,8 @@
 	ic_logMethod(aClass, condition);
 	
 	/// Get meta class to handle class methods
-  Class metaCls = object_getClass(aClass);
-  ic_logMethod(metaCls, condition);
+    Class metaCls = object_getClass(aClass);
+    ic_logMethod(metaCls, condition);
 }
 
 + (instancetype)sharedInstance {
@@ -51,19 +53,16 @@
 	dispatch_once(&onceToken, ^{
 		_sharedICMethodDigger = [[self alloc] init];
 		_sharedICMethodDigger.blockCache = [NSMutableDictionary dictionary];
+        _sharedICMethodDigger.semaphore = dispatch_semaphore_create(1);
 	});
 	
 	return _sharedICMethodDigger;
 }
 
 - (void)setICBlock:(ICBlock *)block forKey:(NSString *)aKey {
-	
-	dispatch_semaphore_t lock = dispatch_semaphore_create(1);
-	
-	dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
+	dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
 	[self.blockCache setObject:block forKey:aKey];
-	dispatch_semaphore_signal(lock);
-
+	dispatch_semaphore_signal(self.semaphore);
 }
 
 - (ICBlock *)blockWithTarget:(id)target {

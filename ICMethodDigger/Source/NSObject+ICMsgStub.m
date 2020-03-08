@@ -33,9 +33,9 @@ InterceptModel* checkTargetSubclassMessageForInstance(NSObject *obj, SEL sel) {
 	
 	for (NSString *clsName in clsList) {
 		Class targetCls = NSClassFromString(clsName);
-		
-    // find obj superclass
+        // find obj superclass
 		if ([obj isKindOfClass:targetCls] && ![obj isMemberOfClass:targetCls]) {
+            // 标明父类被 hook 了
 			ret.status = true;
 			ret.targetClsName = clsName;
 			break;
@@ -95,6 +95,7 @@ void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 	
 	if (![self isKindOfClass:[ICMessageStub class]]) {
 
+        // 如果是中转到桥上的 selector ，则将消息转发给 ICMessageStub
 		if (isInterceptMessage(temporarySEL)) {
 			return [[ICMessageStub alloc] initWithTarget:self selector:temporarySEL];
 		} else {
@@ -102,6 +103,7 @@ void method_swizzle(Class cls, SEL originSEL, SEL newSEL) {
 			InterceptModel *ret = checkTargetSubclassMessageForInstance(self, temporarySEL);
 			
 			if (ret.status) {
+                // 如果父类被 hook 了，直接将消息发送给父类。
 				SEL newSEL = NSSelectorFromString([NSString stringWithFormat:@"__ICMessageTemporary_%@_%@",
 																					 ret.targetClsName,
 																					 NSStringFromSelector(temporarySEL)]);
