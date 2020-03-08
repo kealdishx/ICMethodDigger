@@ -2,8 +2,8 @@
 //  ICDefine.h
 //  ICMethodDigger
 //
-//  Created by zakariyyasv on 2018/7/31.
-//  Copyright © 2018年 iiiCeBlink. All rights reserved.
+//  Created by kealdish on 2018/7/31.
+//  Copyright © 2018年 kealdish. All rights reserved.
 //
 
 #ifndef ICDefine_h
